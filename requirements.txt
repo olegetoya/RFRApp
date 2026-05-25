@@ -1,0 +1,9 @@
+numpy
+pillow
+opencv-python
+setuptools
+wheel
+ninja
+packaging
+streamlit
+pandas
