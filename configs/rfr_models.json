@@ -1,0 +1,36 @@
+{
+  "default_model": "ResUNet_RFR",
+
+  "common": {
+    "input_channels": 1,
+    "mid_channels": 16,
+    "mean": 72.1040267944336,
+    "std": 12.302865028381348,
+    "threshold": 0.5,
+    "min_area": 2,
+    "pad_multiple": 32
+  },
+
+  "models": {
+    "ResUNet_RFR": {
+      "head_name": "ResUNet",
+      "checkpoint": "checkpoints/ResUNet_RFR.pth.tar"
+    },
+    "ISTUDNet_RFR": {
+      "head_name": "ISTUDNet",
+      "checkpoint": "checkpoints/ISTUDNet_RFR.pth.tar"
+    },
+    "DNANet_RFR": {
+      "head_name": "DNANet",
+      "checkpoint": "checkpoints/DNANet_RFR.pth.tar"
+    },
+    "ALCNet_RFR": {
+      "head_name": "ALCNet",
+      "checkpoint": "checkpoints/ALCNet_RFR.pth.tar"
+    },
+    "ACM_RFR": {
+      "head_name": "ACM",
+      "checkpoint": "checkpoints/ACM_RFR.pth.tar"
+    }
+  }
+}
