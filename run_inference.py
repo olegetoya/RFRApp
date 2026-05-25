@@ -5,24 +5,31 @@ from pathlib import Path
 from inference.detector import RFRDetector
 
 
+FIELDNAMES = [
+    "frame_idx",
+    "frame_name",
+    "object_id",
+    "x_center",
+    "y_center",
+    "width",
+    "height",
+    "area",
+    "mask_path",
+    "overlay_path",
+    "model_name",
+]
+
+
 def save_results_csv(results, output_csv):
     output_csv = Path(output_csv)
     output_csv.parent.mkdir(parents=True, exist_ok=True)
 
-    fieldnames = [
-        "frame_idx",
-        "frame_name",
-        "object_id",
-        "x_center",
-        "y_center",
-        "x",
-        "y",
-        "width",
-        "height",
-        "area",
-        "mask_path",
-        "overlay_path",
-    ]
+    fieldnames = list(FIELDNAMES)
+
+    for row in results:
+        for key in row.keys():
+            if key not in fieldnames:
+                fieldnames.append(key)
 
     with open(output_csv, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
@@ -33,18 +40,53 @@ def save_results_csv(results, output_csv):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="RFR ResUNet inference app")
+    parser = argparse.ArgumentParser(
+        description="Run RFR inference on a folder with image sequence."
+    )
 
-    parser.add_argument("--input_dir", required=True, help="Folder with input frames")
-    parser.add_argument("--checkpoint", required=True, help="Path to .pth.tar checkpoint")
-    parser.add_argument("--config", default="configs/resunet_rfr.json", help="Path to config json")
-    parser.add_argument("--output_dir", default="outputs", help="Folder for output masks and csv")
+    parser.add_argument(
+        "--input_dir",
+        required=True,
+        help="Path to folder with input frames."
+    )
+
+    parser.add_argument(
+        "--checkpoint",
+        default=None,
+        help="Path to model checkpoint."
+    )
+
+    parser.add_argument(
+        "--config",
+        default="configs/rfr_models.json",
+        help="Path to RFR models config."
+    )
+
+    parser.add_argument(
+        "--output_dir",
+        default="outputs/test_resunet",
+        help="Path to output folder."
+    )
+
+    parser.add_argument(
+        "--model_name",
+        default="ResUNet_RFR",
+        help="Model name from config, for example: ResUNet_RFR."
+    )
+
+    parser.add_argument(
+        "--device",
+        default=None,
+        help="Device: cuda or cpu. If not set, device is selected automatically."
+    )
 
     args = parser.parse_args()
 
     detector = RFRDetector(
-        checkpoint_path=args.checkpoint,
         config_path=args.config,
+        model_name=args.model_name,
+        checkpoint_path=args.checkpoint,
+        device=args.device,
     )
 
     results = detector.predict_folder(
@@ -55,8 +97,10 @@ def main():
     output_csv = Path(args.output_dir) / "results.csv"
     save_results_csv(results, output_csv)
 
+    print()
     print("Done")
-    print("Objects:", len(results))
+    print("Detected objects:", len(results))
+    print("Output folder:", args.output_dir)
     print("CSV:", output_csv)
 
 

@@ -1,23 +1,63 @@
+# =========================
+# Python cache
+# =========================
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+*.pyo
 
+# =========================
+# Virtual environments
+# =========================
 .venv/
+.venv_broken/
 venv/
 env/
+ENV/
 
+# =========================
+# IDE / editors
+# =========================
 .vscode/
 .idea/
+*.swp
+*.swo
 
-outputs/
-runs/
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Logs
+# =========================
 logs/
-results/
+*.log
 
-datasets/
-dataset/
+# =========================
+# Datasets / input data
+# =========================
 data/
+dataset/
+datasets/
 IRSatVideo-LEO/
+test_frames/
+input/
+inputs/
 
+# =========================
+# Outputs / inference results
+# =========================
+outputs/
+results/
+runs/
+masks/
+overlays/
+
+# =========================
+# Model checkpoints / weights
+# =========================
 checkpoints/*
 !checkpoints/.gitkeep
 
@@ -25,13 +65,62 @@ checkpoints/*
 *.pth.tar
 *.pt
 *.ckpt
+*.onnx
+*.engine
 
+# =========================
+# Numpy / temporary arrays
+# =========================
+*.npy
+*.npz
+
+# =========================
+# Build artifacts
+# =========================
 build/
 dist/
 *.egg-info/
+.eggs/
 
-*.so
+# =========================
+# Compiled native extensions
+# =========================
 *.pyd
+*.so
+*.dll
+*.lib
+*.exp
+*.obj
+*.o
 
+# =========================
+# DCN build artifacts
+# =========================
 model/dcn/build/
 model/dcn/**/build/
+model/dcn/DCN2*.pyd
+model/dcn/DCN2*.so
+model/dcn/*.pyd
+model/dcn/*.so
+
+# =========================
+# CUDA / C++ temporary files
+# =========================
+*.cu.o
+*.cubin
+*.ptx
+
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# Streamlit cache/config
+# =========================
+.streamlit/secrets.toml
+
+# =========================
+# Keep empty folders
+# =========================
+!checkpoints/.gitkeep
