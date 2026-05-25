@@ -7,3 +7,4 @@ ninja
 packaging
 streamlit
 pandas
+PySide6

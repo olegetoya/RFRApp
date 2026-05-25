@@ -253,7 +253,13 @@ class RFRDetector:
         return net
 
     @torch.no_grad()
-    def predict_folder(self, input_dir, output_dir):
+    def predict_folder(
+        self,
+        input_dir,
+        output_dir,
+        should_stop=None,
+        progress_callback=None,
+    ):
         input_dir = Path(input_dir)
         output_dir = Path(output_dir)
 
@@ -278,6 +284,10 @@ class RFRDetector:
         feat_prop = None
 
         for frame_idx, image_path in enumerate(image_paths):
+            if should_stop is not None and should_stop():
+                print("Inference stopped by user.")
+                break
+
             img_tensor, original_img, original_h, original_w = load_frame(
                 image_path,
                 mean=mean,
@@ -321,5 +331,13 @@ class RFRDetector:
                 f"{frame_idx + 1}/{len(image_paths)} "
                 f"{image_path.name}: objects={len(objects)}"
             )
+
+            if progress_callback is not None:
+                progress_callback(
+                    frame_idx + 1,
+                    len(image_paths),
+                    image_path.name,
+                    len(objects),
+                )
 
         return all_results
